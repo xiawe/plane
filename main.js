@@ -8,7 +8,7 @@
 // }
 
 var blocks = []
-
+window.fps = 30 
 var enableDebugMode = function(enable, game) {
     if (!enable) {
         return
@@ -23,7 +23,8 @@ var enableDebugMode = function(enable, game) {
         }
     })
     var slide = document.querySelector('.slide')
-    window.addEventListener('input', function() {
+    slide.addEventListener('input', function(e) {
+        // log('slide', slide.value)
         window.fps = slide.value 
     })
 }
@@ -40,7 +41,7 @@ var __main = function() {
         enemy3: 'img/enemy3.png',
         enemy4: 'img/enemy4.png',
     }
-    var game = XiaGame.instance(images, function(g) {
+    var game = XiaGame.instance(window.fps, images, function(g) {
         var s = Scene.new(g) 
         g.runScene(s)
     })

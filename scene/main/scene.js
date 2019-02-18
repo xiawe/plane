@@ -1,7 +1,48 @@
+const config = {
+    player_speed: 5
+}
+
+class Bullet extends XiaImage {
+    constructor(game) {
+        super(game, 'bullet')
+        this.setup()
+    }
+    setup() {
+        this.speed = 2
+    }
+    update() {
+        this.y -= this.speed
+    }
+}
+
 class Player extends XiaImage {
     constructor(game) {
         super(game, 'player')
+        this.setup()
         this.speed = 5
+    }
+    setup() {
+        this.cooldown = 0
+    }
+    update() {
+        // this.speed = config.player_speed
+        if (this.cooldown > 0) {
+            this.cooldown--
+        }
+    }
+    debug() {
+        this.speed = config.player_speed
+    }
+    fire() {
+        if (this.cooldown == 0) {
+            this.cooldown = 15
+            var x = this.x + this.w / 2
+            var y = this.y
+            var b = Bullet.new(this.game)
+            b.x = x
+            b.y = y
+            this.scene.addElement(b)
+        }
     }
     moveLeft() {
         this.x -= this.speed
@@ -17,7 +58,7 @@ class Player extends XiaImage {
     }
 }
 const randomBetween = function(start, end) {
-    var n = Math.random() * (end - start + 1)
+    var n = Math.random() * (end - start + 1) + start
     return Math.floor(n)
 }
 class Enemy extends XiaImage {
@@ -28,9 +69,26 @@ class Enemy extends XiaImage {
         this.setup()
     }
     setup() {
-        this.speed = randomBetween(5, 10)
+        this.speed = randomBetween(4, 8)
         this.x = randomBetween(0, 390)
-        this.y = randomBetween(-10, 50)
+        this.y = -50
+    }
+    update() {
+        this.y += this.speed
+        if (this.y > 670) {
+            this.setup()
+        }
+    }
+}
+class Cloud extends XiaImage {
+    constructor(game) {
+        super(game, 'cloud')
+        this.setup()
+    }
+    setup() {
+        this.speed = 2
+        this.x = randomBetween(0, 390)
+        this.y = -20
     }
     update() {
         this.y += this.speed
@@ -42,9 +100,9 @@ class Enemy extends XiaImage {
 class Scene extends XiaScene {
     constructor(game) {
         super(game)
+        this.numebrOfEnemy = 10
         this.setup()
         this.setupInput()
-        this.numebrOfEnemy = 10
     }
     setup() {
         var game = this.game
@@ -54,22 +112,23 @@ class Scene extends XiaScene {
         this.player.x = 180
         this.player.y = 550
         this.enemy = Enemy.new(game)
-        this.cloud = XiaImage.new(game, 'cloud')
+        this.cloud = Cloud.new(game)
         this.addElement(this.bg)
         this.addElement(this.player)
+        this.addElement(this.cloud)
         this.addElement(this.enemy)
         this.addEnemy()
+        enableDebugMode(true, game)
     }
     addEnemy() {
         var es = []
         var game = this.game 
-        log(this.numebrOfEnemy)
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < this.numebrOfEnemy; i++) {
             var e = Enemy.new(game)
             this.addElement(e)
             es.push(e)
         }
-        log('es',es)
+        // log('es',es)
         this.es = es 
     }
     setupInput() {
@@ -85,10 +144,13 @@ class Scene extends XiaScene {
         this.game.registerAction('s', () => {
             this.player.moveDown()
         })
+        this.game.registerAction('j', () => {
+            this.player.fire()
+        })
     }
-    update() {
-        this.cloud.y += 5
-    }
+    // update() {
+    //     super.update()
+    // }
 }
 // var Scene = function(game) {
 //     s = {

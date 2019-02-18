@@ -1,5 +1,5 @@
 class XiaGame {
-    constructor(images, runCallback) {
+    constructor(fps, images, runCallback) {
         this.runCallback = runCallback
         this.scene = null
         this.actions = {}
@@ -15,7 +15,7 @@ class XiaGame {
             this.keydowns[event.key] = false
         })
     
-        window.fps = 30
+        this.fps = fps
         this.init(images)
     }
     static instance(...args) {
@@ -31,6 +31,7 @@ class XiaGame {
     }
 
     runLoop() {
+        // log('fps', this.fps)
         var keys = Object.keys(this.actions)
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i]
@@ -39,11 +40,11 @@ class XiaGame {
             }
         }
         this.update()
-        this.context.clearRect(0, 0, 500, 400)
+        this.context.clearRect(0, 0, 400, 650)
         this.draw()
         setTimeout(() => {
             this.runLoop()
-        }, 1000 / fps)
+        }, 1000 / this.fps)
     }
 
     init(images) {

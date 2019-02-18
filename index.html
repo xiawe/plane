@@ -29,6 +29,35 @@
 <body>
     <canvas id="id-canvas" width="400" height="650"></canvas>
     <input type="range" class="slide" value="30">
+    <div>
+        <input type="range" value="" max="15" min="1"
+            data-value="config.player_speed" 
+            class="slide-input"
+        >
+        玩家速度：<label class="slide-label"></label>
+    </div>
     <script src="main.js"></script>
+    <script>
+        var es = el => document.querySelectorAll(el)
+
+        var bindAll = function(el, event, callback) {
+            var l = es(el)
+            for (let i = 0; i < l.length; i++) {
+                const e = l[i]
+                e.addEventListener(event, function(event) {
+                    callback(event)
+                })
+                
+            }
+        }
+
+        bindAll('.slide-input', 'input', function(event) {
+            var target = event.target
+            var bindVar = target.dataset.value
+            var v = target.value
+            eval(bindVar + '=' + v)
+            target.closest('div').querySelector('.slide-label').innerText = v
+        })
+    </script>
 </body>
 </html>
