@@ -15,10 +15,13 @@ class XiaScene {
     }
 
     draw() {
-        for (let i = 0; i < this.elements.length; i++) {
-            var e = this.elements[i]
-            this.game.drawImg(e)
+        for(var e of this.elements) {
+            e.draw()
         }
+        // for (let i = 0; i < this.elements.length; i++) {
+        //     var e = this.elements[i]
+        //     this.game.drawImg(e)
+        // }
     }
     update() {
         for (let i = 0; i < this.elements.length; i++) {

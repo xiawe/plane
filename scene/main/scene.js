@@ -118,6 +118,8 @@ class Scene extends XiaScene {
         this.addElement(this.cloud)
         this.addElement(this.enemy)
         this.addEnemy()
+        var ps = XiaParticleSystem.new(this.game)
+        this.addElement(ps)
         enableDebugMode(true, game)
     }
     addEnemy() {

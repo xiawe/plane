@@ -40,9 +40,11 @@ var __main = function() {
         enemy2: 'img/enemy2.png',
         enemy3: 'img/enemy3.png',
         enemy4: 'img/enemy4.png',
+        spark: 'img/spark.png',
     }
     var game = XiaGame.instance(window.fps, images, function(g) {
         var s = Scene.new(g) 
+        // var s = SceneTitle.new(g)
         g.runScene(s)
     })
 }

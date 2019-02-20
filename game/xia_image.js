@@ -12,6 +12,6 @@ class XiaImage extends XiaScene {
         return i
     }
     draw() {
-
+        this.game.drawImg(this)
     }
 }
